@@ -1,12 +1,17 @@
 const formulario = document.getElementById("novoItem");
 const lista = document.querySelector("#lista");
-const itens = [];
+const itens = JSON.parse(localStorage.getItem("itens")) || [];
+
+itens.forEach((element) => {
+  criaElemento(element.nome, element.quantidade);
+});
 
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();
   const nome = event.target.elements["nome"].value;
   const quantidade = event.target.elements["quantidade"].value;
 
+  armazenaDados(nome, quantidade);
   criaElemento(nome, quantidade);
   limpaFormulario(nome, quantidade, event);
 });
@@ -21,12 +26,7 @@ function criaElemento(nome, quantidade) {
   novoItem.appendChild(numeroItem);
   novoItem.innerHTML += nome;
 
-  armazenaDados(nome, quantidade);
-  adicionaElemento(novoItem);
-}
-
-function adicionaElemento(elemento) {
-  lista.appendChild(elemento);
+  lista.appendChild(novoItem);
 }
 
 function limpaFormulario(nome, quantidade, event) {
@@ -45,5 +45,5 @@ function armazenaDados(nome, quantidade) {
 
   itens.push(itensObjeto);
 
-  localStorage.setItem("item", JSON.stringify(itens));
+  localStorage.setItem("itens", JSON.stringify(itens));
 }
