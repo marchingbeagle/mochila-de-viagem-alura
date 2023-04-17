@@ -14,19 +14,39 @@ formulario.addEventListener("submit", (event) => {
   armazenaDados(nome, quantidade);
   criaElemento(nome, quantidade);
   limpaFormulario(nome, quantidade, event);
+  document.location.reload(true);
+});
+
+const apagar = document.querySelectorAll(".botaoApagar");
+console.log(apagar);
+apagar.forEach((Element, id) => {
+  Element.addEventListener("click", (event) => {
+    console.log(apagar[id]);
+    console.log(itens);
+    itens.splice(id, 1);
+    localStorage.setItem("itens", JSON.stringify(itens));
+    document.location.reload(true);
+  });
 });
 
 function criaElemento(nome, quantidade) {
-  const novoItem = document.createElement("li");
-  novoItem.classList.add("item");
-
+  const liItem = document.createElement("li");
+  const divItem = document.createElement("div");
   const numeroItem = document.createElement("strong");
+  const botaoApagar = document.createElement("button");
+
+  liItem.appendChild(divItem);
+  divItem.appendChild(numeroItem);
+  liItem.appendChild(botaoApagar);
+
+  liItem.classList.add("item");
+  botaoApagar.classList.add("botaoApagar");
+  divItem.classList.add("divItens");
+
   numeroItem.innerHTML = quantidade;
+  divItem.innerHTML += nome;
 
-  novoItem.appendChild(numeroItem);
-  novoItem.innerHTML += nome;
-
-  lista.appendChild(novoItem);
+  lista.appendChild(liItem);
 }
 
 function limpaFormulario(nome, quantidade, event) {
