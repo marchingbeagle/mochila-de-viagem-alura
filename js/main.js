@@ -1,5 +1,6 @@
 const formulario = document.getElementById("novoItem");
 const lista = document.querySelector("#lista");
+const itens = [];
 
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -20,6 +21,7 @@ function criaElemento(nome, quantidade) {
   novoItem.appendChild(numeroItem);
   novoItem.innerHTML += nome;
 
+  armazenaDados(nome, quantidade);
   adicionaElemento(novoItem);
 }
 
@@ -33,4 +35,15 @@ function limpaFormulario(nome, quantidade, event) {
     elementos[i].value = "";
   }
   elementos["adicionar"].value = "Adicionar";
+}
+
+function armazenaDados(nome, quantidade) {
+  const itensObjeto = {
+    nome: nome,
+    quantidade: quantidade,
+  };
+
+  itens.push(itensObjeto);
+
+  localStorage.setItem("item", JSON.stringify(itens));
 }
