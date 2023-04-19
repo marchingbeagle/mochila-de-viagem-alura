@@ -20,43 +20,43 @@ formulario.addEventListener("submit", (event) => {
 
   if (elementoExiste) {
     itensObjeto.id = elementoExiste.id;
-    itens[elementoExiste.id] = itensObjeto;
+    itens[itens.findIndex((element) => element.id === elementoExiste.id)] =
+      itensObjeto;
     atualizaElemento(itensObjeto);
   } else {
-    itensObjeto.id = itens.length;
+    itensObjeto.id = itens[itens.length - 1]
+      ? itens[itens.length - 1].id + 1
+      : 0;
     criaElemento(itensObjeto);
     itens.push(itensObjeto);
   }
 
   localStorage.setItem("itens", JSON.stringify(itens));
   limpaFormulario(event);
-  document.location.reload(true);
 });
 
-const apagar = document.querySelectorAll(".botaoApagar");
-apagar.forEach((Element, id) => {
-  Element.addEventListener("click", (event) => {
-    itens.splice(id, 1);
-    localStorage.setItem("itens", JSON.stringify(itens));
-    document.location.reload(true);
+function botaoApagar(id) {
+  const botaoApagarElement = document.createElement("button");
+  botaoApagarElement.classList.add("botaoApagar");
+  botaoApagarElement.addEventListener("click", function () {
+    deletaElemento(this, id);
   });
-});
+  return botaoApagarElement;
+}
 
 function criaElemento(item) {
   const liItem = document.createElement("li");
   const divItem = document.createElement("div");
   const numeroItem = document.createElement("strong");
-  const botaoApagar = document.createElement("button");
 
   liItem.appendChild(divItem);
   divItem.appendChild(numeroItem);
-  liItem.appendChild(botaoApagar);
+  liItem.appendChild(botaoApagar(item.id));
 
   liItem.classList.add("item");
-  botaoApagar.classList.add("botaoApagar");
   divItem.classList.add("divItens");
-  numeroItem.dataset.id = item.id;
 
+  numeroItem.dataset.id = item.id;
   numeroItem.innerHTML = item.quantidade;
   divItem.innerHTML += item.nome;
 
@@ -75,4 +75,14 @@ function atualizaElemento(item) {
   console.log(item.id);
   document.querySelector("[data-id=" + '"' + item.id + '"]').innerHTML =
     item.quantidade;
+}
+
+function deletaElemento(tag, id) {
+  console.log(itens);
+  itens.splice(
+    itens.findIndex((element) => element.id === id),
+    1
+  );
+  localStorage.setItem("itens", JSON.stringify(itens));
+  tag.parentNode.remove();
 }

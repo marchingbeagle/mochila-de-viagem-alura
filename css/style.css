@@ -140,5 +140,6 @@ html {
 .botaoApagar{
     padding: 1rem;
     border-radius: 1rem;
-    border: 0.2rem;
+    border: 1rem;
+    background-color: #7e7d7d;
 }
